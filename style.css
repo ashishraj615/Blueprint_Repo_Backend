@@ -1,0 +1,102 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Arial';
+}
+body {
+    background-image: url('chipset.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This keeps the image static */
+    background-position: center center;
+}
+
+.timeline{
+    background-color: #555;
+    display: flex;
+    justify-content: center;
+    padding: 0.25rem 0.25rem;
+}
+.running-text{
+    background-color: #ffb600;
+    display: flex;
+    justify-content: center;
+    padding: 0.25rem 0.25rem;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0.7rem;
+    background-color: #ab6b37;
+}
+
+.nav-logo {
+    flex: 0 0 auto;
+}
+
+.nav-center {
+    flex: 1 1 auto;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.nav-right {
+    flex: 0 0 auto;
+    font-size: 1.2rem;
+}
+
+.nav-right a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #333;
+}
+
+.container {
+    height: 100vh;
+}
+.container h1 {
+    text-align: center;
+    color: #fff;
+    padding-top: 5%;
+}
+.container a {
+    text-align: center;
+    color: #fff;
+    margin: 3rem 0.1rem 3rem 0.1rem;
+    font-size: 1.2rem;
+    color: #fc7703;
+    background-color: #1d1d1d;
+    padding: 5rem;
+    border-radius: 1rem;
+}
+
+.dashboard-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.address{
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    font-size: .8rem; 
+    padding: 1rem 2rem 1rem 2rem;
+}
+
+.address span{
+    padding: 1rem;
+}
+.copyright {
+    background-color: #ffb600;
+    display: flex;
+    justify-content: center;
+    color: #444;
+    font-size: .8rem; 
+    font-weight: bold;
+    padding: .5rem .5rem;
+}
