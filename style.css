@@ -11,6 +11,12 @@ body {
     background-position: center center;
 }
 
+/* header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+} */
+
 .timeline{
     background-color: #555;
     display: flex;
@@ -62,21 +68,37 @@ body {
     color: #fff;
     padding-top: 5%;
 }
-.container a {
-    text-align: center;
-    color: #fff;
-    margin: 3rem 0.1rem 3rem 0.1rem;
-    font-size: 1.2rem;
-    color: #fc7703;
-    background-color: #1d1d1d;
-    padding: 5rem;
-    border-radius: 1rem;
+
+.container p{
+    color: #afdfe5;
+    font-size: medium;
 }
 
 .dashboard-links {
     display: flex;
     justify-content: center;
     gap: 2rem;
+    margin: 5%;
+    flex-wrap: wrap;
+}
+
+.dashboard-links a {
+    text-align: center;
+    width: 20%;
+    color: #fff;
+    /* margin: 3rem 0.1rem 3rem 0.1rem; */
+    font-size: 1.2rem;
+    color: #fc7703;
+    background-color: #1d1d1d;
+    padding: 5%;
+    border-radius: 1rem;
+}
+
+
+.footer {
+    position: fixed;
+    bottom: 0%;
+    width: 100%;
 }
 
 .address{
