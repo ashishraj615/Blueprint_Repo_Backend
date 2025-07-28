@@ -63,12 +63,14 @@ header {
 }
 
 .container {
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 10vh;
+    padding-bottom: 10vh;
 }
 @media (max-width: 768px) {
     .container {
         padding-top: 20vh;
+        padding-bottom: 20vh;
     }
 }
 @media (max-width: 507px) {
@@ -173,7 +175,7 @@ footer {
     align-items: center;
     justify-content: center;
     text-align: center;
-    height: 4rem;         /* Set a fixed height */
+    height: 6rem;         /* Set a fixed height */
     width: 100%;          /* Make them fill the available width */
     font-size: 1.2rem;
     color: #fc7703;
@@ -206,7 +208,37 @@ footer {
     }
     .login-form a {
         margin-bottom: 10px; /* Optional: adds spacing between links */
+        height: 3rem;
     }
+}
+.complaint-links{
+    width: 70%;
+    margin: 15px auto;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.4); /* semi-transparent white */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: large;
+    gap: 1rem;
+    justify-content: center;
+}
+.complaint-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 6rem;         /* Set a fixed height */
+    max-width: 100%;          /* Make them fill the available width */
+    font-size: 1.2rem;
+    color: #fc7703;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 0 1rem;      /* Horizontal padding only */
+    text-decoration: none;
+    border-radius: 1rem;
+    box-sizing: border-box;
 }
 input{
     height: 1rem; /* Adjust value as needed */
