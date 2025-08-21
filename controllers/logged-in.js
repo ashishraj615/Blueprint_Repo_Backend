@@ -17,6 +17,5 @@ exports.fileComplaint = (req, res) => {
   const { location, subarea, empno, username, mobilenumber, desc, email } = req.body;
   const complaint = new complaints(location, subarea, empno, username, mobilenumber, desc, email);
   complaints.addComplaint(complaint);
-  console.log('Complaint filed:');
   res.render('user/new-complaint.ejs',{empno});
 };
