@@ -2,6 +2,7 @@ const express = require('express');
 const userDashboard = require('./routes/user-dashboard');
 const adminDashboard = require('./routes/admin-dashboard');
 const path = require('path');
+const mongoConnect = require('./utils/databaseUtil');
 const app = express();
 const port = 3000;
 
@@ -27,6 +28,8 @@ app.use((req, res) => {
   res.status(404).render('404.ejs');
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+mongoConnect((client) => {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  })}
+);
