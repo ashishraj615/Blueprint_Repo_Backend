@@ -30,11 +30,13 @@ exports.getComplaints = (req, res) => {
 
 exports.getComplaintsbyID = (req, res) => {
   const { complaintId } = req.body;
-  console.log('Fetching complaints by ID:', complaintId);
-  complaints.findOne({ id: complaintId}).then(complaintsList => {
-    console.log('Fetched complaints by ID:', complaintsList);
-    res.render('../views/user/view-complaints.ejs', { complaints: [complaintsList] ,  isLoggedIn: req.session.isLoggedIn});
-  }).catch(err => {
+  complaints.findOne({ id: complaintId}).then(complaint => {
+  if (!complaint) { // ID not found
+    res.render('../views/user/view-complaints.ejs', { complaints: [], isLoggedIn: req.session.isLoggedIn, notFound: true });
+  } else {// ID found
+    res.render('../views/user/view-complaints.ejs', { complaints: [complaint], isLoggedIn: req.session.isLoggedIn });
+  }
+}).catch(err => {
     console.error('Error fetching complaints:', err);
     res.status(500).send('Internal Server Error');
   });
