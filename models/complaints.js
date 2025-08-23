@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const {getDb} = require('../utils/databaseUtil');
 
 module.exports = class Complaints {
-  constructor(location, subarea, empno, username, mobilenumber, desc, email) {
+  constructor(location, subarea, empno, username, mobilenumber, desc, email, id) {
     this.location = location  || '';
     this.subarea = subarea || '';
     this.empno = empno || '';
@@ -10,25 +11,27 @@ module.exports = class Complaints {
     this.mobilenumber = mobilenumber || '';
     this.desc = desc || '';
     this.email = email || '';
+    this.id = id || '';
   }
   static getComplaints() {
     // This method would typically fetch complaints from a database
-    const pathToFile = path.join(__dirname, '../data', 'complaints.json');
-    if (fs.existsSync(pathToFile)) {
-      const data = fs.readFileSync(pathToFile, 'utf-8');
-      if (!data.trim()) return []; // Handle empty file
-      // Parse the JSON data and return it
-      return JSON.parse(data);
-    }
-    else    
-      return [];
+    const db = getDb();
+    return db.collection('complaints').find().toArray();
+  }
+  static getComplaintsbyID(complaintId) {
+    // This method would typically fetch complaints from a database
+    const db = getDb();
+    return db.collection('complaints').find({id: complaintId}).next();
   }
   static addComplaint(complaint) {
     // This method would typically save the complaint to a database
-    let complaints = Complaints.getComplaints();
-    complaints.push(complaint);
-    const pathToFile = path.join(__dirname,'../data', 'complaints.json');
-    fs.writeFileSync(pathToFile, JSON.stringify(complaints, null, 2), 'utf-8');
-    console.log('Complaint added:', complaint);
+    const db = getDb();
+    return db.collection('complaints').insertOne(complaint)
+      .then(result => {
+        console.log('Complaint added to database:', result);
+      })
+      .catch(err => {
+        console.error('Error adding complaint to database:', err);
+      });
   }
 };

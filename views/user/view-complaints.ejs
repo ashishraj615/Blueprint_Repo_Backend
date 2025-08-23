@@ -1,0 +1,54 @@
+<%- include('../partials/header.ejs') -%>
+    <main class="container">
+        
+        <div><h1>Registered Complaints</h1></div>
+        <div class="complaint-table">
+            
+            <% if (typeof complaints === 'undefined') { %>
+                <p>No complaints registered yet.</p>
+            <% } %>
+            
+          <% if (complaints && complaints.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>Location</th>
+                        <th>Sub-Area</th>
+                        <th>EIS Number</th>
+                        <th>Employee Name</th> 
+                        <th>Mobile Number</th>
+                        <th>Description</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% complaints.forEach(complaint => { %>
+                        <tr>
+                            <td><%= complaint.id %></td>
+                            <td><%= complaint.location %></td>
+                            <td><%= complaint.subarea %></td>
+                            <td><%= complaint.empno %></td>
+                            <td><%= complaint.username %></td>
+                            <td><%= complaint.mobilenumber %></td>
+                            <td><%= complaint.desc %></td>
+                            <td><%= complaint.email %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <% } else { %>
+            <p>No complaints registered yet.</p>
+          <% } %>
+            
+        </div>
+            <div class="complaint-links">
+                <a>File Complaint</a>
+                <a href="view-complaintsbyID">View complaint by ID</a>
+                <a>View complaint by serial number</a>
+                <a href="view-complaints">View registered complaints</a>
+        </div>
+    </main>
+<%- include('../partials/footer.ejs') -%>
+</body>
+</html>

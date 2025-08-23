@@ -1,8 +1,9 @@
 <%- include('../partials/header.ejs') -%>
     <main class="container">
         
-        <div><h1><% if (typeof empno !== 'undefined') { %>
-            Complaint submitted successfully,
+        <div><h1><% if (typeof id !== 'undefined') { %>
+            Complaint submitted successfully with complaint ID: <%= id %><br>
+            Please note down your complaint ID for future reference.<br><br>
         <% } %>File a New Complaint</h1></div>
         <div class="login-form">
             <form action="file-complaint" method="post">
@@ -40,9 +41,9 @@
         </div>
             <div class="complaint-links">
                 <a>File Complaint</a>
-                <a>View complaint by ID</a>
+                <a href="view-complaintsbyID">View complaint by ID</a>
                 <a>View complaint by serial number</a>
-                <a>View registered complaints</a>
+                <a href="view-complaints">View registered complaints</a>
         </div>
     </main>
 <%- include('../partials/footer.ejs') -%>

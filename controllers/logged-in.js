@@ -13,9 +13,35 @@ exports.getLogin = (req, res) => {
   }
 };
 
+exports.getComplaints = (req, res) => {
+  complaints.getComplaints().then(complaintsList => {
+    console.log('Fetched complaints:', complaintsList);
+    res.render('../views/user/view-complaints.ejs', { complaints: complaintsList });
+  }).catch(err => {
+    console.error('Error fetching complaints:', err);
+    res.status(500).send('Internal Server Error');
+  });
+};
+
+exports.getComplaintsbyID = (req, res) => {
+  const { complaintId } = req.body;
+  console.log('Fetching complaints by ID:', complaintId);
+  complaints.getComplaintsbyID(complaintId).then(complaintsList => {
+    console.log('Fetched complaints by ID:', complaintsList);
+    res.render('../views/user/view-complaints.ejs', { complaints: [complaintsList] });
+  }).catch(err => {
+    console.error('Error fetching complaints:', err);
+    res.status(500).send('Internal Server Error');
+  });
+};
 exports.fileComplaint = (req, res) => {
   const { location, subarea, empno, username, mobilenumber, desc, email } = req.body;
-  const complaint = new complaints(location, subarea, empno, username, mobilenumber, desc, email);
-  complaints.addComplaint(complaint);
-  res.render('user/new-complaint.ejs',{empno});
+  const now = new Date();
+  const datePart = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
+  const randomPart = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
+  const id = `${datePart}${randomPart}`;
+  const complaint = new complaints(location, subarea, empno, username, mobilenumber, desc, email, id);
+  complaints.addComplaint(complaint).then(() => {
+    console.log('Complaint filed successfully');});
+  res.render('user/new-complaint.ejs',{id});
 };

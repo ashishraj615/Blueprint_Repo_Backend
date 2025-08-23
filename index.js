@@ -2,7 +2,7 @@ const express = require('express');
 const userDashboard = require('./routes/user-dashboard');
 const adminDashboard = require('./routes/admin-dashboard');
 const path = require('path');
-const mongoConnect = require('./utils/databaseUtil');
+const {mongoConnect} = require('./utils/databaseUtil');
 const app = express();
 const port = 3000;
 
