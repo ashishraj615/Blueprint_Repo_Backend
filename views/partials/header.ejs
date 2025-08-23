@@ -25,6 +25,9 @@
             <span class="nav-right">
                 <a href="index">Dashboard</a>
                 <a href="#">Help</a>
+                <% if (isLoggedIn) { %>
+                <a href="logout">Logout</a>
+                <% } %>
             </span>
         </nav>
     </header>

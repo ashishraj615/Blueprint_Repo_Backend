@@ -1,37 +1,14 @@
-const fs = require('fs');
-const path = require('path');
-const {getDb} = require('../utils/databaseUtil');
+const mongoose = require('mongoose');
 
-module.exports = class Complaints {
-  constructor(location, subarea, empno, username, mobilenumber, desc, email, id) {
-    this.location = location  || '';
-    this.subarea = subarea || '';
-    this.empno = empno || '';
-    this.username = username || '';
-    this.mobilenumber = mobilenumber || '';
-    this.desc = desc || '';
-    this.email = email || '';
-    this.id = id || '';
-  }
-  static getComplaints() {
-    // This method would typically fetch complaints from a database
-    const db = getDb();
-    return db.collection('complaints').find().toArray();
-  }
-  static getComplaintsbyID(complaintId) {
-    // This method would typically fetch complaints from a database
-    const db = getDb();
-    return db.collection('complaints').find({id: complaintId}).next();
-  }
-  static addComplaint(complaint) {
-    // This method would typically save the complaint to a database
-    const db = getDb();
-    return db.collection('complaints').insertOne(complaint)
-      .then(result => {
-        console.log('Complaint added to database:', result);
-      })
-      .catch(err => {
-        console.error('Error adding complaint to database:', err);
-      });
-  }
-};
+const complaintsSchema = new mongoose.Schema({
+  location: {type: String, required: true},
+  subarea: {type: String, required: true},
+  empno: {type: Number, required: true},
+  username: {type: String, required: true},
+  mobilenumber: {type: Number, required: true},
+  desc: {type: String},
+  email: {type: String},
+  id: {type: Number, required: true, unique: true}
+});
+
+module.exports = mongoose.model('Complaints', complaintsSchema);
