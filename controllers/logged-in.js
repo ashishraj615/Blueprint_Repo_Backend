@@ -1,19 +1,37 @@
 const complaints = require('../models/complaints');
+const { check, validationResult } = require("express-validator");
 
-exports.getLogin = (req, res) => {
-  const eis = 90385287;
-  const password = '2025-08-07';
-  const { username, password: userPassword, empno } = req.body;
-  if (username == eis && userPassword == password) {
-    console.log('Login successful', { username, empno });
-    req.session.isLoggedIn = true;
-    res.render('user/new-complaint.ejs', { isLoggedIn: req.session.isLoggedIn, empno });
-  } else {
-    console.log('Login failed');
-    req.session.isLoggedIn = false;
-    res.render('user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn});
+exports.getLogin = [
+  check('username')
+  .trim()
+  .isNumeric()
+  .withMessage('EIS must be numeric')
+  .isLength({ min: 4, max: 8 })
+  .withMessage('EIS must be at max 8 digits long')
+  ,
+  
+  (req, res) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      const eis = 90385287;
+      const password = '2025-08-07';
+      const { username, password: userPassword , empno} = req.body;
+      if (username == eis && userPassword == password) {
+        console.log('Login successful', { username, empno });
+        req.session.isLoggedIn = true;
+        req.session.username = username;
+        res.render('user/new-complaint.ejs', { isLoggedIn: req.session.isLoggedIn, empno });
+      } else {
+        console.log('Login failed');
+        req.session.isLoggedIn = false;
+        res.render('user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn, validationErrors: ["Invalid EIS or Date of Birth"], oldInput: { username: req.body.username} });
+      }
+    }
+    else{
+      res.status(422).render('../views/user/login-page.ejs', { isLoggedIn: false, validationErrors: errors.array().map(err => err.msg), oldInput: { username: req.body.username}});
+    }
   }
-};
+];
 
 exports.getComplaints = (req, res) => {
   complaints.find().then(complaintsList => {
@@ -21,7 +39,7 @@ exports.getComplaints = (req, res) => {
     if(req.session.isLoggedIn)
       res.render('../views/user/view-complaints.ejs', { complaints: complaintsList, isLoggedIn: req.session.isLoggedIn });
     else
-      res.render('../views/user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn});
+      res.render('../views/user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn, validationErrors: []});
   }).catch(err => {
     console.error('Error fetching complaints:', err);
     res.status(500).send('Internal Server Error');

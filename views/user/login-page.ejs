@@ -2,6 +2,19 @@
     <main class="container">
         <div><h1>Portal Login</h1></div>
         <div class="login-form">
+            <% if (validationErrors.length > 0) {%>
+                <div role="alert">
+                    <strong>Error!</strong>
+                    <span>
+                    <% validationErrors.forEach(error => { %>
+                        <li><%= error %></li>
+                    <% }) %>
+                    </span>
+                    <span>
+                    <i class="fas fa-times"></i>
+                    </span>
+                </div>
+            <% } %>  <br>
             <form action="login" method="post">
                 <div>
                     <label for="username">EIS Number / Man Number:</label>
