@@ -13,22 +13,20 @@ exports.getLogin = [
   (req, res) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
-      const eis = 90385287;
-      const password = '2025-08-07';
-      const { username, password: userPassword , empno} = req.body;
-      if (username == eis && userPassword == password) {
-        console.log('Login successful', { username, empno });
+      const eis = '90385287'; const password = '2025-08-07';
+      const username = req.body.username;
+      const userPassword = req.body.password;
+      if (username === eis && userPassword === password) {
         req.session.isLoggedIn = true;
         req.session.username = username;
-        res.render('user/new-complaint.ejs', { isLoggedIn: req.session.isLoggedIn, empno });
+        res.status(201).json({ username, status: true });
       } else {
-        console.log('Login failed');
         req.session.isLoggedIn = false;
-        res.render('user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn, validationErrors: ["Invalid EIS or Date of Birth"], oldInput: { username: req.body.username} });
+        res.status(201).json({ username, status: false })
       }
     }
     else{
-      res.status(422).render('../views/user/login-page.ejs', { isLoggedIn: false, validationErrors: errors.array().map(err => err.msg), oldInput: { username: req.body.username}});
+      res.status(422).json({ username, status: false })
     }
   }
 ];
@@ -61,7 +59,7 @@ exports.getComplaintsbyID = (req, res) => {
 };
 
 exports.fileComplaint = (req, res) => {
-  const { location, subarea, empno, username, mobilenumber, desc, email } = req.body;
+  const { location, subarea, serial, empno, username, mobilenumber, desc, email } = req.body;
   const now = new Date();
   const datePart = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
   const randomPart = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
