@@ -2,9 +2,7 @@ const complaints = require('../models/complaints');
 const { check, validationResult } = require("express-validator");
 
 exports.getLogin = [
-  check('username')
-  .trim()
-  .isNumeric()
+  check('username').trim().isNumeric()
   .withMessage('EIS must be numeric')
   .isLength({ min: 4, max: 8 })
   .withMessage('EIS must be at max 8 digits long')
@@ -12,6 +10,7 @@ exports.getLogin = [
   
   (req, res) => {
     const errors = validationResult(req);
+    console.log('initial session: ',req.session.isLoggedIn)
     if (errors.isEmpty()) {
       const eis = '90385287'; const password = '2025-08-07';
       const username = req.body.username;
@@ -19,9 +18,11 @@ exports.getLogin = [
       if (username === eis && userPassword === password) {
         req.session.isLoggedIn = true;
         req.session.username = username;
+        console.log('after session: ',req.session.isLoggedIn)
         res.status(201).json({ username, status: true });
       } else {
         req.session.isLoggedIn = false;
+        console.log('after session: ',req.session.isLoggedIn)
         res.status(201).json({ username, status: false })
       }
     }
@@ -33,11 +34,8 @@ exports.getLogin = [
 
 exports.getComplaints = (req, res) => {
   complaints.find().then(complaintsList => {
-    console.log('Fetched complaints:', complaintsList);
-    if(req.session.isLoggedIn)
-      res.render('../views/user/view-complaints.ejs', { complaints: complaintsList, isLoggedIn: req.session.isLoggedIn });
-    else
-      res.render('../views/user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn, validationErrors: []});
+    console.log('session:', req.session.isLoggedIn);
+    res.status(201).json({ complaints: complaintsList, isLoggedIn: req.session.isLoggedIn });
   }).catch(err => {
     console.error('Error fetching complaints:', err);
     res.status(500).send('Internal Server Error');

@@ -20,10 +20,8 @@ userDashboardRouter.get('/logout', (req, res) => {
 });
 
 userDashboardRouter.get('/file-complaint',(req, res) => { 
-  if(req.session.isLoggedIn)
-    res.render('user/new-complaint.ejs', { isLoggedIn: req.session.isLoggedIn});
-  else
-    res.render('user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn, validationErrors: []});});
+  console.log("session: ",req.session.isLoggedIn)
+  res.status(201).json({isLoggedIn: req.session.isLoggedIn})});
 
 userDashboardRouter.post('/file-complaint', loggedInController.fileComplaint);
 userDashboardRouter.get('/view-complaints', loggedInController.getComplaints);
