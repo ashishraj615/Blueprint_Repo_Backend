@@ -32,6 +32,6 @@ userDashboardRouter.get('/view-complaintsbyID', (req, res) => {
   else
     res.render('user/login-page.ejs', { isLoggedIn: req.session.isLoggedIn, validationErrors: []});});
 
-userDashboardRouter.post('/view-complaintsbyID', loggedInController.getComplaintsbyID);
+userDashboardRouter.post('/view-complaintsbyValue', loggedInController.getComplaintsbyID);
 
 module.exports = userDashboardRouter;

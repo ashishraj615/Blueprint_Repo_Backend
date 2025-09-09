@@ -43,7 +43,10 @@ exports.getComplaints = (req, res) => {
 };
 
 exports.getComplaintsbyID = (req, res) => {
-  const { complaintId } = req.body;
+  const complaintId  = req.body.value;
+  console.log("complaint id receivd: ",complaintId.length);
+  if(complaintId.length=='12')
+    console.log("hello")
   complaints.findOne({ id: complaintId}).then(complaint => {
   if (!complaint) { // ID not found
     res.render('../views/user/view-complaints.ejs', { complaints: [], isLoggedIn: req.session.isLoggedIn, notFound: true });
