@@ -45,18 +45,32 @@ exports.getComplaints = (req, res) => {
 exports.getComplaintsbyID = (req, res) => {
   const complaintId  = req.body.value;
   console.log("complaint id receivd: ",complaintId.length);
-  if(complaintId.length=='12')
+  if(complaintId.length=='12'){
     console.log("hello")
-  complaints.findOne({ id: complaintId}).then(complaint => {
-  if (!complaint) { // ID not found
-    res.render('../views/user/view-complaints.ejs', { complaints: [], isLoggedIn: req.session.isLoggedIn, notFound: true });
-  } else {// ID found
-    res.render('../views/user/view-complaints.ejs', { complaints: [complaint], isLoggedIn: req.session.isLoggedIn });
+    complaints.findOne({ id: complaintId}).then(complaint => {
+    if (!complaint) { // ID not found
+      res.status(201).json({ complaints: [], isLoggedIn: req.session.isLoggedIn, notFound: true });
+    } else {// ID found
+      res.status(201).json({ complaints: [complaint], isLoggedIn: req.session.isLoggedIn });
+    }
+  }).catch(err => {
+      console.error('Error fetching complaints:', err);
+      res.status(500).send('Internal Server Error');
+    });
   }
-}).catch(err => {
-    console.error('Error fetching complaints:', err);
-    res.status(500).send('Internal Server Error');
-  });
+  else{
+    complaints.findOne({ serialno: complaintId}).then(complaint => {
+    if (!complaint) { // ID not found
+      res.status(201).json({ complaints: [], isLoggedIn: req.session.isLoggedIn, notFound: true });
+    } else {// ID found
+      res.status(201).json({ complaints: [complaint], isLoggedIn: req.session.isLoggedIn });
+    }
+  }).catch(err => {
+      console.error('Error fetching complaints:', err);
+      res.status(500).send('Internal Server Error');
+    });
+  }
+
 };
 
 exports.fileComplaint = (req, res) => {
