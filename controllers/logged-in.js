@@ -70,16 +70,15 @@ exports.getComplaintsbyID = (req, res) => {
       res.status(500).send('Internal Server Error');
     });
   }
-
 };
 
 exports.fileComplaint = (req, res) => {
-  const { location, subarea, component1, component2, component3, component4, component5, serialno, empno, username, mobilenumber, desc, email } = req.body;
+  const { location, subarea, component1, component2, component3, component4, component5, serialno, empno, username, mobilenumber, desc, email, filedby } = req.body;
   const now = new Date();
   const datePart = now.toISOString().slice(0, 10).replace(/-/g, ''); // YYYYMMDD
   const randomPart = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
   const id = `${datePart}${randomPart}`;
-  const complaint = new complaints({location, subarea, component1, component2, component3, component4, component5, serialno, empno, username, mobilenumber, desc, email, id});
+  const complaint = new complaints({location, subarea, component1, component2, component3, component4, component5, serialno, empno, username, mobilenumber, desc, email, id,filedby});
   complaint.save().then(() => {
     console.log('Complaint filed successfully');});
   res.status(201).json({id, isLoggedIn: req.session.isLoggedIn})

@@ -14,7 +14,8 @@ const complaintsSchema = new mongoose.Schema({
   mobilenumber: {type: Number, required: true},
   desc: {type: String},
   email: {type: String},
-  id: {type: Number, required: true, unique: true}
+  id: {type: Number, required: true, unique: true},
+  filedby: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Complaints', complaintsSchema);
