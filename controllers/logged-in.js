@@ -33,8 +33,8 @@ exports.getLogin = [
 ];
 
 exports.getComplaints = (req, res) => {
-  complaints.find().then(complaintsList => {
-    console.log('session:', req.session.isLoggedIn);
+  complaints.find({ filedby: req.query.filedby}).then(complaintsList => {
+    console.log('session:', req.session.isLoggedIn,  typeof(req.query.filedby));
     res.status(201).json({ complaints: complaintsList, isLoggedIn: req.session.isLoggedIn });
   }).catch(err => {
     console.error('Error fetching complaints:', err);
@@ -44,7 +44,7 @@ exports.getComplaints = (req, res) => {
 
 exports.getComplaintsbyID = (req, res) => {
   const complaintId  = req.body.value;
-  console.log("complaint id receivd: ",complaintId.length);
+  console.log("complaint id receivd: ",complaintId.length, req.query);
   if(complaintId.length=='12'){
     console.log("hello")
     complaints.findOne({ id: complaintId}).then(complaint => {
