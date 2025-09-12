@@ -11,15 +11,19 @@ exports.getLogin = [
   
   (req, res) => {
     const errors = validationResult(req);
-    logintable.findOne({ eis_no: req.body.username}).then(logintable => {
-    console.log('from login table:', logintable, req.body.username);
-  });
+  //   logintable.find({})
+  // .then(users => {
+  //   console.log('All users:', users);
+  // })
+  // .catch(err => {
+  //   console.error(err);
+  // });
+    logintable.findOne({ eis_no: req.body.username}).then(user => {
     console.log('initial session: ',req.session.isLoggedIn)
     if (errors.isEmpty()) {
-      const eis = '90385287'; const password = '07-08-2025';
       const username = req.body.username;
       const userPassword = req.body.password;
-      if (username === eis && userPassword === password) {
+      if (username === user.eis_no && userPassword === user.dob) {
         req.session.isLoggedIn = true;
         req.session.username = username;
         console.log('after session: ',req.session.isLoggedIn)
@@ -33,6 +37,8 @@ exports.getLogin = [
     else{
       res.status(422).json({ username, status: false })
     }
+  });
+    
   }
 ];
 
