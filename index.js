@@ -6,9 +6,16 @@ const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
 const { default: mongoose } = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const app = express();
-const port = 3000;
-const mongoUrl = 'mongodb+srv://ashishraj615:Ashish000$@pccomplaints.covxsm3.mongodb.net/complaintsmanagement?retryWrites=true&w=majority&appName=PCcomplaints';
+dotenv.config(); // load .env variables
+
+// Example: using PORT from .env
+const PORT = process.env.PORT || 3000;
+
+// Example: MongoDB URI from .env
+const MONGO_URI = process.env.MONGO_URI;
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -18,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 
 const store = new MongoDbStore({
-  uri: mongoUrl,
+  uri: String(MONGO_URI),
   collection: 'sessions'
 });
 
@@ -48,10 +55,10 @@ app.use((req, res) => {
 
 
 
-mongoose.connect(mongoUrl).then(() => {
+mongoose.connect(String(MONGO_URI)).then(() => {
   console.log('Database connected successfully to mongoose'); 
-  app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
   })
 }).catch((err) => {
   console.log('Error while connecting to database', err);
