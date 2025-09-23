@@ -37,6 +37,10 @@ app.use(session({
   store: store
 }));
 
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
 app.get(['/', '/index'], (req, res) => {
   res.render('index.ejs', { isLoggedIn: req.session.isLoggedIn});
 });
