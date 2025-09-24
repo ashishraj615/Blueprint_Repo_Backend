@@ -1,6 +1,7 @@
 const express = require('express');
 const userDashboardRouter = express.Router();
 const loggedInController = require('../controllers/logged-in');
+const ensureAuthenticated = require('../controllers/auth');
 
 
 userDashboardRouter.get('/', (req, res) => {
@@ -24,7 +25,7 @@ userDashboardRouter.get('/file-complaint',(req, res) => {
   res.status(201).json({isLoggedIn: req.session.isLoggedIn})});
 
 userDashboardRouter.post('/file-complaint', loggedInController.fileComplaint);
-userDashboardRouter.get('/view-complaints', loggedInController.getComplaints);
+userDashboardRouter.get('/view-complaints', ensureAuthenticated, loggedInController.getComplaints);
 
 userDashboardRouter.get('/view-complaintsbyID', (req, res) => { 
   if(req.session.isLoggedIn) 

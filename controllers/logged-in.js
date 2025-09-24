@@ -1,6 +1,7 @@
 const complaints = require('../models/complaints');
 const logintable = require('../models/logintable');
 const { check, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 exports.getLogin = [
   check('username').trim().isNumeric()
@@ -11,26 +12,20 @@ exports.getLogin = [
   
   (req, res) => {
     const errors = validationResult(req);
-  //   logintable.find({})
-  // .then(users => {
-  //   console.log('All users:', users);
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  // });
     logintable.findOne({ eis_no: req.body.username}).then(user => {
-    console.log('initial session: ',req.session.isLoggedIn)
     if (errors.isEmpty()) {
       const username = req.body.username;
       const userPassword = req.body.password;
       if (username === user.eis_no && userPassword === user.dob) {
         req.session.isLoggedIn = true;
         req.session.username = username;
-        console.log('after session: ',req.session.isLoggedIn)
-        res.status(201).json({ username, status: true });
+        const jwttoken = jwt.sign({username: user.eis_no},
+          process.env.JWT_SECRET,
+          {expiresIn: '10m'}
+        )
+        res.status(201).json({ jwttoken, status: true });
       } else {
         req.session.isLoggedIn = false;
-        console.log('after session: ',req.session.isLoggedIn)
         res.status(201).json({ username, status: false })
       }
     }
@@ -45,6 +40,7 @@ exports.getLogin = [
 exports.getComplaints = (req, res) => {
   complaints.find({ filedby: req.query.filedby}).then(complaintsList => {
     console.log('session:', req.session.isLoggedIn,  typeof(req.query.filedby));
+    console.log("jwt user: ", req.user)
     res.status(201).json({ complaints: complaintsList, isLoggedIn: req.session.isLoggedIn });
   }).catch(err => {
     console.error('Error fetching complaints:', err);
