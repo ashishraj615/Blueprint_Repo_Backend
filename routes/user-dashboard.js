@@ -20,14 +20,14 @@ userDashboardRouter.get('/logout', (req, res) => {
   });
 });
 
-userDashboardRouter.get('/file-complaint',(req, res) => { 
+userDashboardRouter.get('/file-complaint', ensureAuthenticated, (req, res) => { 
   console.log("session: ",req.session.isLoggedIn)
   res.status(201).json({isLoggedIn: req.session.isLoggedIn})});
 
-userDashboardRouter.post('/file-complaint', loggedInController.fileComplaint);
+userDashboardRouter.post('/file-complaint', ensureAuthenticated, loggedInController.fileComplaint);
 userDashboardRouter.get('/view-complaints', ensureAuthenticated, loggedInController.getComplaints);
 
-userDashboardRouter.get('/view-complaintsbyID', (req, res) => { 
+userDashboardRouter.get('/view-complaintsbyID', ensureAuthenticated, (req, res) => { 
   if(req.session.isLoggedIn) 
     res.render('user/view-complaintbyId.ejs', { isLoggedIn: req.session.isLoggedIn});
   else

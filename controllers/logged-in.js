@@ -21,9 +21,9 @@ exports.getLogin = [
         req.session.username = username;
         const jwttoken = jwt.sign({username: user.eis_no},
           process.env.JWT_SECRET,
-          {expiresIn: '10m'}
+          {expiresIn: '1m'}
         )
-        res.status(201).json({ jwttoken, status: true });
+        res.status(201).json({ username, status: true, jwttoken });
       } else {
         req.session.isLoggedIn = false;
         res.status(201).json({ username, status: false })
